@@ -9,6 +9,7 @@ import yaml
 import sentencepiece as spm
 import torch
 from tokenizer import Tokenizer
+from transformers import AutoTokenizer
 CONFIG_PATH = os.path.join(os.path.dirname(__file__), "..", "configs", "config.yaml")
 DATA_PATH = os.path.join(os.path.dirname(__file__), "..", "data")
 
@@ -97,11 +98,7 @@ if __name__ == "__main__":
         data_path = "D:\\gpt\\multihead_attention\\data"
     elif os.name == 'posix':
         data_path = "/mnt/d/gpt/multihead_attention/data"
-
-    corpus = ""
-    with open(os.path.join(data_path, "wmt14_translate_de-en_test.csv"), 'r') as f:
-        corpus += f.read()
-    tokenizer = Tokenizer(corpus=corpus)
-    print(tokenizer.encode("I love germany, I'm german myself"))
+    tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
     train_dl, test_dl, val_dl = load_data(data_path=data_path, tokenizer=tokenizer, batch_size=4)
+
 
