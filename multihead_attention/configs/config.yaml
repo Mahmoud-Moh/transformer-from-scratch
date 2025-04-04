@@ -6,3 +6,4 @@ training:
   d_model: 512
   n_heads: 8
   vocab_size: 37000
+  shuffle: True

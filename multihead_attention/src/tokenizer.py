@@ -5,7 +5,6 @@ class Tokenizer:
                  bos_id=2, eos_id=3):
         words = corpus.split(" ")
         sentences = ["".join(words[ptr:ptr+words_per_sentences]) for ptr in range(len(words)-words_per_sentences-1)]
-        print(sentences)
         spm.SentencePieceTrainer.train(
             sentence_iterator=iter(sentences), 
             model_prefix=model_prefix,

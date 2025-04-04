@@ -13,7 +13,7 @@ CONFIG_PATH = os.path.join(os.path.dirname(__file__), "..", "configs", "config.y
 DATA_PATH = os.path.join(os.path.dirname(__file__), "..", "data")
 
 def load_config(config_path=CONFIG_PATH):
-    with open('config.yaml', 'r') as file:
+    with open(config_path, 'r') as file:
         return yaml.safe_load(file)
 
 config = load_config()
@@ -92,10 +92,16 @@ def train_val(epochs, model, loss_fn, opt, train_dl, val_dl, device, sanity_chec
 
 
 if __name__ == "__main__":
-    data_path = "D:\gpt\multihead_attention\data"
+    data_path = ""
+    if os.name == 'nt':
+        data_path = "D:\\gpt\\multihead_attention\\data"
+    elif os.name == 'posix':
+        data_path = "/mnt/d/gpt/multihead_attention/data"
+
     corpus = ""
-    with open(os.path.join(data_path, "wmt14_translate_de-en_train.csv"), 'r') as f:
+    with open(os.path.join(data_path, "wmt14_translate_de-en_test.csv"), 'r') as f:
         corpus += f.read()
     tokenizer = Tokenizer(corpus=corpus)
-    train_dl, test_dl, val_dl = load_data(data_path=data_path, tokenizer=tokenizer)
+    print(tokenizer.encode("I love germany, I'm german myself"))
+    train_dl, test_dl, val_dl = load_data(data_path=data_path, tokenizer=tokenizer, batch_size=4)
 
