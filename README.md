@@ -30,6 +30,7 @@ Once downloaded, place the contents in the data/ directory.
 - **Dataset**: WMT14 English–German (only 0.1% used due to resource constraints)
 - **Epochs**: 3
 - **Framework**: PyTorch
+- **Tokenizer**: pretrained t5-base
 
 Despite using only a tiny portion of the dataset, the model successfully learns and reduces the loss over time.
 ![output](https://github.com/user-attachments/assets/026ab955-372c-4a18-bca3-ae2241bc7cc4)
