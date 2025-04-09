@@ -4,7 +4,7 @@ This project is a reimplementation of the original **Transformer** architecture 
 
 Special thanks to the repository [**hyunwoongko/transformer**](https://github.com/hyunwoongko/transformer) which served as a guidance source for structuring the codebase and understanding nuances of the implementation.
 
-This repo simplifies the implementation of transformer by eleminiating elements (dropout, bleu accuracy, spacy tokenizer, custom dataLoader, BucketIterator) and embracing native huggingface and pytorch elements (torch DataLoader, transformers.AutoTokenizer) and focusing on the basic concept of transformer.
+This repo simplifies the above implementation of a transformer by eleminiating the use of dropout, calculation of bleu accuracy. Embracing huggingface and pytorch environment by replacing spacy tokenizer with huggingface AutoTokenizer, and replacing Customer DataLoader and BuckerIterator with torch DataLoader, giving a modern standard implementation and focus on the process of training the transformer.
 
 ---
 
