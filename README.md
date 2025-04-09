@@ -19,18 +19,7 @@ kagglehub.login()
 # Download the EN-DE dataset
 path_df_train = kagglehub.dataset_download("mohamedlotfy50/wmt-2014-english-german")
 ```
-Once downloaded, place the contents in the data/ directory:
-your-project/
-├── src/
-│   ├── model.py
-│   ├── dataset.py
-│   └── ...
-├── data/
-│   ├── train.csv
-│   ├── val.csv
-│   └── test.csv
-├── train.py
-└── README.md
+Once downloaded, place the contents in the data/ directory.
 
 ## 🏋️ Training Setup
 
