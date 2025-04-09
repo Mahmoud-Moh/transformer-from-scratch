@@ -1,16 +1,21 @@
 import torch
 from torch.utils.data import Dataset, DataLoader
 import pandas as pd
+import random
 class WMT14Dataset(Dataset):
-    def __init__(self, csv_file, max_length=512, src_lang="de", tgt_lang="en", tokenizer=None):
+    def __init__(self, csv_file, max_length=512, src_lang="de", tgt_lang="en", tokenizer=None, data_percentage=0.1):
         self.data = pd.read_csv(csv_file, lineterminator="\n")
-        self.src_texts = self.data[src_lang].tolist()
-        self.tgt_texts = self.data[tgt_lang].tolist()
+        src_texts = self.data[src_lang].tolist()
+        tgt_texts = self.data[tgt_lang].tolist()
+        n_rows = len(src_texts)
+        rand_start = random.randint(0, n_rows - int(data_percentage*n_rows))
+        self.src_texts = src_texts[rand_start : rand_start + int(data_percentage*n_rows)]
+        self.tgt_texts = tgt_texts[rand_start : rand_start + int(data_percentage*n_rows)]
         self.tokenizer = tokenizer
         self.max_length = max_length
 
     def __len__(self):
-        return len(self.data)
+        return len(self.src_texts)
 
     def __getitem__(self, idx):
         x = self.src_texts[idx]

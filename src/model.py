@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import math
 
+
 class MultiHeadAttention(nn.Module):
     def __init__(self, d_model, n_heads):
         super(MultiHeadAttention, self).__init__()
@@ -42,7 +43,7 @@ class MultiHeadAttention(nn.Module):
 class ScaledDotProductAttention(nn.Module):
     def __init__(self):
         super(ScaledDotProductAttention, self).__init__()
-        self.softmax = nn.softmax(dim=-1)
+        self.softmax = nn.Softmax(dim=-1)
     
     def forward(self, q, k, v, mask=None, e=1e-12):
         k_t = k.transpose(2, 3)
@@ -70,7 +71,7 @@ class LayerNorm(nn.Module):
 
         out = (x - mean) / torch.sqrt(var)
         out = self.gamma * out + self.beta
-        return x
+        return out
     
 
 class FeedForwardLayer(nn.Module):
@@ -78,7 +79,7 @@ class FeedForwardLayer(nn.Module):
         super(FeedForwardLayer, self).__init__()
         self.linear1 = nn.Linear(d_model, hidden)
         self.linear2 = nn.Linear(hidden, d_model)
-        self.relu = nn.RelU()
+        self.relu = nn.ReLU()
     
     def forward(self, x):
         x = self.linear1(x)
@@ -161,7 +162,7 @@ class Encoder(nn.Module):
         return x
 
 class TokenEmbedding(nn.Embedding):
-    def __init__(self, vocab_size, d_model, device):
+    def __init__(self, vocab_size, d_model):
         super(TokenEmbedding, self).__init__(num_embeddings=vocab_size, embedding_dim=d_model, padding_idx=0)
 
 
@@ -206,25 +207,25 @@ class DecoderLayer(nn.Module):
 
 
 class Decoder(nn.Module):
-    def __init__(self, enc_voc_size, max_len, d_model, ffn_hidden, n_head, n_layers, device):
+    def __init__(self, dec_voc_size, max_len, d_model, ffn_hidden, n_head, n_layers, device):
         super(Decoder, self).__init__()
-        self.emb = TransformerEmbedding(vocab_size=enc_voc_size, d_model=d_model, max_len=max_len, device=device)
-        self.layers = [DecoderLayer(n_heads=n_head, d_model=d_model, hidden=ffn_hidden) 
-                       for _ in range(n_layers)]
-        self.linear = nn.Linear()
+        self.emb = TransformerEmbedding(vocab_size=dec_voc_size, d_model=d_model, max_len=max_len, device=device)
+        self.layers = nn.ModuleList([DecoderLayer(n_heads=n_head, d_model=d_model, hidden=ffn_hidden) 
+                                     for _ in range(n_layers)])
+        self.linear = nn.Linear(d_model, dec_voc_size)
         
-    
     def forward(self, trg, src, trg_mask, src_mask):
-        x = self.emb(x)
+        x = self.emb(trg)  # Use embedded input
         for layer in self.layers:
-            x = layer(x_out=trg, x_enc=src, trg_mask=trg, src_mask=src_mask)
-        return x
+            x = layer(x_out=x, x_enc=src, trg_mask=trg_mask, src_mask=src_mask)
+        return self.linear(x)
+
 
 
 class Transformer(nn.Module):
 
     def __init__(self, src_pad_idx, trg_pad_idx, trg_sos_idx, enc_voc_size, dec_voc_size, d_model, n_head, max_len,
-                 ffn_hidden, n_layers, drop_prob, device):
+                 ffn_hidden, n_layers, device):
         super().__init__()
         self.src_pad_idx = src_pad_idx
         self.trg_pad_idx = trg_pad_idx
@@ -235,7 +236,6 @@ class Transformer(nn.Module):
                                max_len=max_len,
                                ffn_hidden=ffn_hidden,
                                enc_voc_size=enc_voc_size,
-                               drop_prob=drop_prob,
                                n_layers=n_layers,
                                device=device)
 
@@ -244,7 +244,6 @@ class Transformer(nn.Module):
                                max_len=max_len,
                                ffn_hidden=ffn_hidden,
                                dec_voc_size=dec_voc_size,
-                               drop_prob=drop_prob,
                                n_layers=n_layers,
                                device=device)
 

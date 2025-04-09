@@ -17,6 +17,7 @@ class Tokenizer:
         encoder = spm.SentencePieceProcessor()
         encoder.load(model_prefix+".model")
         self.encoder = encoder
+        
     
     def encode(self, text):
         return self.encoder.encode_as_ids(text)

@@ -69,7 +69,14 @@ def loss_epoch(model, loss_fn, dataset_dl, device='cpu', opt=None):
     loss = 0.0
     metric = 0.0
     len_data = len(dataset_dl.dataset)
-    for xb, yn in dataset_dl:
+    for batch in dataset_dl:
+        src = batch["input_ids"]
+        trg = batch["label"]
+        output = model(src, trg)
+        #Note that src and trg are of length B * max_len * vocab_size 
+        #For example 4 * 256 * 37000
+
+
         xb = xb.to(device)
         yb = yb.to(device)
         yb_h = model(xb)

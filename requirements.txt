@@ -2,3 +2,4 @@ kagglehub
 torch
 kagglehub[pandas-datasets]
 sentencepiece
+transformers
