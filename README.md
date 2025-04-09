@@ -1,8 +1,10 @@
 # 🔁 Transformer from "Attention Is All You Need" — Reimplemented from Scratch
 
-This project is a faithful, from-scratch reimplementation of the original **Transformer** architecture introduced in the paper [**"Attention Is All You Need"**](https://arxiv.org/abs/1706.03762).
+This project is a reimplementation of the original **Transformer** architecture introduced in the paper [**"Attention Is All You Need"**](https://arxiv.org/abs/1706.03762).
 
 Special thanks to the repository [**hyunwoongko/transformer**](https://github.com/hyunwoongko/transformer) which served as a guidance source for structuring the codebase and understanding nuances of the implementation.
+
+This repo simplifies the implementation of transformer by eleminiating elements (dropout, bleu accuracy, spacy tokenizer, custom dataLoader, BucketIterator) and embracing native huggingface and pytorch elements (torch DataLoader, transformers.AutoTokenizer) and focusing on the basic concept of transformer.
 
 ---
 
