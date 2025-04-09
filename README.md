@@ -28,7 +28,7 @@ Once downloaded, place the contents in the data/ directory.
 - **Model**: Full Transformer (encoder-decoder architecture)
 - **Dropout**: Not used
 - **Dataset**: WMT14 English–German (only 0.1% used due to resource constraints)
-- **Epochs**: 3
+- **Epochs**: 2
 - **Framework**: PyTorch
 - **Tokenizer**: pretrained t5-base
 
